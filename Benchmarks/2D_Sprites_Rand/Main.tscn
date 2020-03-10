@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Tools/BENCHMARK_HANDLER.tscn" type="PackedScene" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+var sprite = preload(\"res://Benchmarks/2D_Sprites_Rand/Sprite2D.tscn\")
+
+onready var camera = $Camera2D
+
+func _ready():
+	camera.position = OS.get_window_size()/2
+	for i in range(25000):
+		var instance = sprite.instance()
+		add_child(instance)
+		instance.position = OS.get_window_size()/2
+
+var switch : bool = true
+
+func _process(delta):
+	camera.rotation += PI/10 * delta
+	if(switch):
+		camera.zoom *= 1.005
+		if(camera.zoom >= Vector2(2.0,2.0)):
+			switch = !switch
+	else:
+		camera.zoom /= 1.005
+		if(camera.zoom <= Vector2(1.0,1.0)):
+			switch = !switch
+			global.next_bench()
+"
+
+[node name="Node2D" type="Node2D"]
+script = SubResource( 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+rotating = true
+current = true
+
+[node name="BENCHMARK_HANDLER" parent="." instance=ExtResource( 1 )]

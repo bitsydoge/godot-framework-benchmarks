@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/icon.png" type="Texture" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Sprite3D
+
+var speed 
+var direction_sprite
+
+func _ready():
+
+	speed = global.r.randf_range(5,15)
+	direction_sprite = Vector3(global.r.randf_range(-1,1), global.r.randf_range(-1,1), global.r.randf_range(-1,1))
+	modulate.r = global.r.randf()
+	modulate.g = global.r.randf()
+	modulate.b = global.r.randf()
+	scale = Vector3(global.r.randf()*2+1, global.r.randf()*2+1, global.r.randf()*2+1)
+	rotation_degrees = Vector3(global.r.randf()*360, global.r.randf()*360, global.r.randf()*360)
+	
+func _process(delta):
+	
+	translation.x += delta * speed * direction_sprite.x
+	translation.y += delta * speed * direction_sprite.y
+	translation.z += delta * speed * direction_sprite.z
+"
+
+[node name="Sprite3D" type="Sprite3D"]
+alpha_cut = 2
+texture = ExtResource( 1 )
+script = SubResource( 1 )

@@ -1,0 +1,64 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Fonts/FiraSans-Medium.otf" type="DynamicFontData" id=1]
+
+[sub_resource type="DynamicFont" id=2]
+font_data = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Label
+
+func _ready():
+	text = \"\"
+	
+	if global.bench_have_been_runned_one_time:
+		for i in global.register_bench:
+			var result = 0
+			for j in i.frames_time:
+				result += j
+			result /= i.frames_time.size()
+			text += i.name + \" : \" + str(1.0/result) + \"\\n\"
+
+
+func _on_Button_pressed():
+	get_tree().change_scene(\"res://Menu_Start.tscn\")
+	pass # Replace with function body.
+"
+
+[node name="Result" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -138.0
+margin_top = -198.0
+margin_right = 136.0
+margin_bottom = 12.0
+custom_fonts/font = SubResource( 2 )
+text = "Result : "
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.5
+margin_top = 32.5
+margin_right = 140.5
+margin_bottom = 113.5
+text = "Return Main Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Button" to="Label" method="_on_Button_pressed"]
